@@ -73,7 +73,8 @@ No abrupt jumps
 Adjustable via control sliders (Web)
 
 🌐 Web Version (flame.html)
-Features:
+
+  Features:
 
 Mouse-driven interaction
 

@@ -127,10 +127,10 @@ position += velocity
 ## 📁 Repository Structure
 
 ```
-Flame-Project/
+Flam-Project/
 │
 ├── web/
-│   └── flame.html
+│   └── flam.html
 │
 ├── ios/
 │   ├── ios-ver.swift

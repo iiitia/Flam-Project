@@ -24,6 +24,7 @@ iOS: Gyroscope (CoreMotion)
 Dynamic control points P₁ and P₂ move like masses attached to springs, giving the curve a rope-like, natural motion.
 
 🧠 Mathematical Model
+
 1️⃣ Cubic Bézier Formula
 
 Using four control points P₀, P₁, P₂, P₃:

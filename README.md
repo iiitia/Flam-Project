@@ -1,180 +1,132 @@
+# 🔥 Flame Project: Interactive Bézier Curve with Physics & Sensor Control
 
-🔥 Flame-Project
-Interactive Bézier Curve with Physics & Sensor Control
+**Author:** Shruti  
+**Date:** December 13, 2025
 
-Author: Shruti
-Date: December 13, 2025
+---
 
-This project contains two separate implementations of an interactive cubic Bézier curve:
+## 📌 Overview
 
-🌐 Web Version: flame.html
+This project implements an interactive cubic Bézier curve system with spring-damper physics across two platforms:
 
-📱 iOS Version: ios-ver.swift + ViewController.swift
+- **🌐 Web Version** (`flame.html`) - Mouse-driven interaction
+- **📱 iOS Version** (`ios-ver.swift` + `ViewController.swift`) - Gyroscope-driven interaction
 
-Both versions implement the Bézier curve, tangent vectors, and spring-damper physics manually, without using external libraries.
+Both versions feature manually implemented Bézier mathematics, tangent vector visualization, and real-time physics simulation—no external libraries required.
 
-📌 Overview
+---
 
-The Bézier curve reacts to user-controlled motion:
+## 🧠 Mathematical Foundation
 
-Web: Mouse input
+### Cubic Bézier Curve
 
-iOS: Gyroscope (CoreMotion)
+The curve is defined by four control points (P₀, P₁, P₂, P₃):
 
-Dynamic control points P₁ and P₂ move like masses attached to springs, giving the curve a rope-like, natural motion.
+```
+B(t) = (1−t)³P₀ + 3(1−t)²tP₁ + 3(1−t)t²P₂ + t³P₃
+```
 
-🧠 Mathematical Model
+- Sampled at **Δt = 0.01** for smooth rendering
+- Point-by-point rendering for precision
 
-1️⃣ Cubic Bézier Formula
+### Tangent Vectors
 
-Using four control points P₀, P₁, P₂, P₃:
+First derivative of the Bézier curve:
 
-B(t) = (1−t)³ P0
-     + 3(1−t)² t P1
-     + 3(1−t) t² P2
-     + t³ P3
+```
+B'(t) = 3(1−t)²(P₁−P₀) + 6(1−t)t(P₂−P₁) + 3t²(P₃−P₂)
+```
 
+- Normalized for consistent visualization
+- Displayed at evenly spaced intervals along the curve
 
-Curve is sampled at Δt = 0.01
+---
 
-Rendering done point-by-point
+## ⚙️ Physics Model
 
-2️⃣ Tangent Vector Formula
+Dynamic control points (P₁, P₂) use a **spring-damper system**:
 
-Derivative of Bézier curve:
-
-B'(t) = 3(1−t)² (P1−P0)
-      + 6(1−t)t (P2−P1)
-      + 3t² (P3−P2)
-
-
-Tangents are normalized:
-
-unitVector = vector / √(dx² + dy²)
-
-
-Displayed at evenly spaced t-values.
-
-⚙️ Physics Model
-
-The behavior of dynamic control points uses a spring-damper system:
-
-acceleration = -k (pos - target)
-               − damping × velocity
+```
+acceleration = −k(position − target) − damping × velocity
 velocity += acceleration
 position += velocity
+```
 
-Benefits:
+**Benefits:**
+- Smooth, natural elasticity
+- Configurable stiffness and damping
+- No abrupt discontinuities
 
-Smooth, realistic elasticity
+---
 
-No abrupt jumps
+## 🌐 Web Version
 
-Adjustable via control sliders (Web)
+### Features
+- Real-time mouse tracking
+- Interactive sliders for:
+  - Spring stiffness
+  - Damping coefficient
+  - Number of tangent vectors
+- 60 FPS rendering via `requestAnimationFrame`
 
-🌐 Web Version (flame.html)
+### How to Run
+1. Save as `flame.html`
+2. Open in any modern browser
+3. Move mouse to deform the curve
+4. Adjust sliders to modify physics behavior
 
-  Features:
+**Compatibility:** Chrome, Firefox, Edge, Safari
 
-Mouse-driven interaction
+---
 
-Sliders for:
+## 📱 iOS Version
 
-Spring stiffness
+### Files
+- **`ios-ver.swift`** - Custom Bézier rendering view
+- **`ViewController.swift`** - View controller setup
 
-Damping
+### Features
+- CoreMotion gyroscope integration
+- CADisplayLink for 60 FPS animation
+- Real-time curve deformation via device tilt
+- CoreGraphics-based manual rendering
 
-Tangent count
+### Setup Instructions
 
-60 FPS rendering using requestAnimationFrame
+1. **Create new iOS project** in Xcode
+2. **Add both Swift files** to project
+3. **Configure Info.plist** - Add motion permission:
+   ```xml
+   <key>NSMotionUsageDescription</key>
+   <string>This app needs motion input to animate the Bézier curve.</string>
+   ```
+4. **Run on device or simulator**
 
-Fully manual Bézier computation
+> **Note:** Simulator has limited gyroscope emulation, but animation works correctly.
 
-How to Run:
+---
 
-Save the file as flame.html
+## 🔬 Validation
 
-Double-click to open in a browser
+### Mathematical Accuracy
+- ✅ Correct curve endpoints
+- ✅ Accurate tangent directions
+- ✅ C¹ continuity maintained
 
-Move your mouse to deform the curve
+### Physics Stability
+- ✅ Stable oscillations under default parameters
+- ✅ Natural rope-like motion
+- ✅ No divergence or instability
 
-Adjust sliders to modify physics
+### Performance
+- ✅ Consistent ~60 FPS on both platforms
+- ✅ Efficient rendering pipeline
 
-Works on:
+---
 
-Chrome
+## 📁 Repository Structure
 
-Firefox
-
-Edge
-
-Safari
-
-📱 iOS Version
-Files:
-
-ios-ver.swift – main custom Bézier view
-
-ViewController.swift – loads the custom view into screen
-
-Additional Requirement:
-
-Add this to Info.plist:
-
-Privacy - Motion Usage Description
-"This app needs motion input to animate the Bézier curve."
-
-Features:
-
-Uses CoreMotion for gyroscope input
-
-Real-time animation using CADisplayLink (60 FPS)
-
-Curve updates as the device tilts
-
-Full manual rendering using CoreGraphics
-
-How to Run:
-
-Open Xcode → Create new iOS App
-
-Add both Swift files to the project
-
-Add motion permission key to Info.plist
-
-Run on:
-
-iOS Simulator
-
-or a real device
-
-Simulator does not fully emulate gyroscope movement,
-but animation still works correctly.
-
-🔬 Validation (Web + iOS)
-Mathematical:
-
-Curve endpoints correct
-
-Tangent direction accuracy validated
-
-C¹ curve continuity maintained
-
-Physics:
-
-Stable under default parameters
-
-Visually natural oscillations
-
-No divergence
-
-Performance:
-
-Both versions achieve ~60 FPS
-
-Efficient drawing & updating
-
-📁 Repository Structure
+```
 Flame-Project/
 │
 ├── web/
@@ -185,37 +137,59 @@ Flame-Project/
 │   └── ViewController.swift
 │
 └── README.md
+```
 
-🎬 Demo Recording Guide (30s)
+---
 
-Show:
+## 🎬 Demo Recording Guide (30 seconds)
 
-Web curve reacting to mouse
+**Suggested shots:**
 
-Changing stiffness → more rigid motion
+1. **Web interaction** - Curve following mouse movement
+2. **Slider adjustments:**
+   - Increase stiffness → more rigid behavior
+   - Adjust damping → smoother/bouncier motion
+3. **Tangent vectors** - Visualization moving with curve
+4. **iOS version** - Simulator or device showing gyroscope control
+5. **Tilt demonstration** - Device rotation affecting curve shape
 
-Changing damping → smoother or bouncier motion
+---
 
-Tangent vectors moving with curve
-
-iOS simulator running the Swift version
-
-Tilting device (if available)
-
-📝 Conclusion
+## 🎯 Key Achievements
 
 This project demonstrates:
 
-Manual Bézier curve mathematics
+- ✨ Manual implementation of Bézier curve mathematics
+- 📐 Derivative-based tangent vector computation
+- 🎪 Spring-damper physics modeling
+- 🚀 Real-time animation on Web & iOS platforms
+- 📱 Sensor-based interaction via CoreMotion
+- 🏗️ Clean, modular code architecture
 
-Derivative-based tangent visualization
+**All assignment requirements successfully fulfilled.**
 
-Spring-damper physics modeling
+---
 
-Real-time animation on Web & iOS
+## 🔧 Technical Specifications
 
-Sensor-based interaction on iOS
+| Feature | Web | iOS |
+|---------|-----|-----|
+| **Input** | Mouse | Gyroscope |
+| **Rendering** | Canvas 2D | CoreGraphics |
+| **Animation** | requestAnimationFrame | CADisplayLink |
+| **Frame Rate** | 60 FPS | 60 FPS |
+| **Physics** | Manual | Manual |
+| **Math** | Manual | Manual |
 
-Clean modular code architecture
+---
 
-Meets all requirements of the assignment.
+## 📖 Further Documentation
+
+For implementation details, see inline code comments in:
+- `flame.html` - Web implementation
+- `ios-ver.swift` - iOS Bézier view
+- `ViewController.swift` - iOS setup
+
+---
+
+*Built with precision and passion for computational graphics.*

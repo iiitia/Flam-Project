@@ -1,4 +1,4 @@
-# 🔥 Flame Project: Interactive Bézier Curve with Physics & Sensor Control
+# 🔥 Flam Project: Interactive Bézier Curve with Physics & Sensor Control
 
 **Author:** Shruti  
 **Date:** December 13, 2025
